@@ -1,6 +1,6 @@
 /* public/css/style.css */
 
-@font-face { font-family: 'Gothferatu'; src: url('/fonts/Gothferatu.ttf') format('truetype'); font-weight: normal; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Gothferatu'; src: url('../fonts/Gothferatu.ttf') format('truetype'); font-weight: normal; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Gothikka'; src: url('/fonts/Gothikka.ttf') format('truetype'); font-weight: normal; font-style: normal; font-display: swap; }
 
 :root { /* Tema Padrão: Nocturnal */
