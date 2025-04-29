@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'Coming Soon' %> - Moonred Society</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* Estilos específicos para centralizar */
+        .coming-soon-container {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: var(--text-color-subtle);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .coming-soon-container h2 {
+            font-family: var(--font-display); /* Gothferatu */
+            font-size: var(--font-size-xxl); /* Tamanho maior */
+            color: var(--text-color-headings);
+            margin-bottom: 1.5rem;
+        }
+         .coming-soon-container p {
+             font-size: var(--font-size-large); /* Tamanho maior */
+             color: var(--text-color-main);
+             margin-bottom: 2.5rem;
+         }
+          a.back-link {
+             display: inline-block;
+             margin-top: 1.5rem;
+             color: var(--text-color-subtle);
+             text-decoration: none;
+             border: 1px solid var(--border-color-input);
+             padding: 0.8rem 1.5rem; /* Padding maior */
+             border-radius: 3px;
+             transition: all 0.2s;
+             font-family: var(--font-navigation); /* Gothical */
+             font-size: var(--font-size-normal);
+         }
+         a.back-link:hover {
+             background-color: var(--bg-color-item-header-hover);
+             border-color: var(--border-color-highlight);
+             color: var(--text-color-sidebar-link-active);
+         }
+    </style>
+</head>
+<body class="view-desktop"> <!-- Classe de tema/view pelo JS -->
+
+    <div class="layout-container">
+        <%- include('./partials/sidebar') %> <!-- Sidebar Principal -->
+
+        <main class="content">
+            <%- include('./partials/header') %>
+            <%- include('./partials/messages') %>
+
+            <div class="coming-soon-container">
+                <h2><%= typeof sectionTitle !== 'undefined' ? sectionTitle : 'Page' %> Coming Soon...</h2>
+                <p>This section is currently under development. Stay tuned!</p>
+                 <a href="/" class="back-link">← Go Home</a>
+            </div>
+
+            <!-- Footer incluído no final do main -->
+            <%- include('./partials/footer') %>
+
+        </main> <!-- Fim de main.content -->
+    </div> <!-- Fim de layout-container -->
+
+    <!-- Scripts Globais -->
+    <script src="/js/script.js" defer></script>
+    <script src="/js/dropdown.js" defer></script>
+    <script src="/js/theme-switcher.js" defer></script>
+    <script src="/js/view-switcher.js" defer></script>
+
+</body>
+</html>

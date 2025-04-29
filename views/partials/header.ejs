@@ -1,0 +1,48 @@
+<!-- views/partials/header.ejs -->
+<header class="content-header">
+    <div class="header-left">
+        <% if (typeof pageTitle !== 'undefined' && (pageTitle.includes('Tracker') || pageTitle.includes('Elden Ring') || pageTitle.includes('Bloodborne'))) { %>
+            <div class="content-back-link">
+                <a href="/">← Back to Games</a>
+            </div>
+        <% } %>
+    </div>
+    <div class="header-right">
+        <% if (typeof user !== 'undefined' && user) { %>
+            <!-- Logged IN state -->
+            <div id="settings-container">
+                <button id="settings-button" class="header-nav-button" type="button" aria-haspopup="true" aria-expanded="false">
+                    Settings
+                </button>
+                <div id="settings-dropdown" role="menu">
+                    <div class="dropdown-section">
+                        <h5>Theme</h5>
+                        <button type="button" data-theme="nocturnal" class="theme-button" role="menuitem">Nocturnal</button>
+                        <button type="button" data-theme="lyset" class="theme-button" role="menuitem">Lyset</button>
+                        <button type="button" data-theme="hollow-wanderer" class="theme-button" role="menuitem">Hollow Wanderer</button>
+                        <button type="button" data-theme="wandering-bokser" class="theme-button" role="menuitem">Wandering Bokser</button>
+                    </div>
+                    <div class="dropdown-section">
+                        <h5>View</h5>
+                        <button type="button" data-view="desktop" class="view-button" role="menuitem">Desktop</button>
+                        <button type="button" data-view="mobile" class="view-button" role="menuitem">Mobile</button>
+                    </div>
+                </div>
+            </div>
+            <div class="user-info">
+                <a href="/profile" class="user-profile-link" title="Go to your Profile">
+                    <span class="username"><%= user.username %></span>
+                </a>
+                <form action="/auth/logout" method="POST" class="logout-form">
+                    <button type="submit" class="header-nav-button">Logout</button>
+                </form>
+            </div>
+        <% } else { %>
+            <!-- Logged OUT state -->
+            <div class="auth-links">
+                <a href="/auth/login" class="header-nav-button">Login</a>
+                <a href="/auth/register" class="header-nav-button">Register</a>
+            </div>
+        <% } %>
+    </div>
+</header>

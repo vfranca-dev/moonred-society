@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'Home - Moonred Society' %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="view-desktop"> <!-- Classe de view e tema inicial -->
+
+    <!-- Botão Hamburger para Mobile (ADICIONADO AQUI) -->
+    <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="icon-open">☰</span> <!-- Ícone de abrir -->
+        <span class="icon-close">✕</span> <!-- Ícone de fechar -->
+    </button>
+    <!-- Overlay Mobile (ADICIONADO AQUI) -->
+    <div id="mobile-overlay" class="mobile-overlay"></div>
+
+    <div class="layout-container">
+        <%- include('partials/sidebar') %>
+
+        <main class="content">
+            <%- include('partials/header') %>
+            <%- include('partials/messages') %>
+
+            <h2 class="page-title">Select a game to proceed...</h2>
+
+            <div class="game-cards">
+                <div class="game-card">
+                    <h3>Elden Ring</h3>
+                    <p>May you find your guidance amidst the shattering, brave Tarnished.</p>
+                    <a href="/game/elden-ring" class="card-button">enter</a>
+                </div>
+                <div class="game-card">
+                    <h3>Bloodborne</h3>
+                    <p>May you find your worth in the waking world, good Hunter.</p>
+                    <a href="#" class="card-button soon">soon</a>
+                </div>
+                <div class="game-card">
+                    <h3>Dark Souls</h3>
+                    <p>May you find purpose lest the hollowing claim you, chosen Undead.</p>
+                    <a href="#" class="card-button soon">soon</a>
+                </div>
+            </div>
+
+            <%- include('partials/footer') %>
+
+        </main>
+    </div>
+
+    <!-- Scripts Globais -->
+     <script src="/js/script.js" defer></script>
+     <script src="/js/dropdown.js" defer></script>
+     <script src="/js/theme-switcher.js" defer></script>
+     <script src="/js/view-switcher.js" defer></script>
+     <!-- Elden Ring Tracker script NÃO é necessário aqui -->
+
+</body>
+</html>

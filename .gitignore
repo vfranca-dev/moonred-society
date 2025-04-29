@@ -1,0 +1,12 @@
+# .gitignore
+
+# Dependências
+node_modules
+
+# Arquivo de variáveis de ambiente
+.env
+
+# Logs e arquivos temporários comuns
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
