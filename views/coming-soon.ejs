@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <style>
         /* Estilos específicos para centralizar */
-        .coming-soon-container {
+        .coming-soon-content {
             text-align: center;
             padding: 4rem 1rem;
             color: var(--text-color-subtle);
@@ -17,18 +17,18 @@
             justify-content: center;
             align-items: center;
         }
-        .coming-soon-container h2 {
+        .coming-soon-content h2 {
             font-family: var(--font-display); /* Gothferatu */
             font-size: var(--font-size-xxl); /* Tamanho maior */
             color: var(--text-color-headings);
             margin-bottom: 1.5rem;
         }
-         .coming-soon-container p {
+         .coming-soon-content p {
              font-size: var(--font-size-large); /* Tamanho maior */
              color: var(--text-color-main);
              margin-bottom: 2.5rem;
          }
-          a.back-link {
+          a.back-button { /* Classe consistente */
              display: inline-block;
              margin-top: 1.5rem;
              color: var(--text-color-subtle);
@@ -37,17 +37,29 @@
              padding: 0.8rem 1.5rem; /* Padding maior */
              border-radius: 3px;
              transition: all 0.2s;
-             font-family: var(--font-navigation); /* Gothical */
+             font-family: var(--font-primary); /* Usa a variável correta */
              font-size: var(--font-size-normal);
          }
-         a.back-link:hover {
+         a.back-button:hover {
              background-color: var(--bg-color-item-header-hover);
              border-color: var(--border-color-highlight);
              color: var(--text-color-sidebar-link-active);
          }
     </style>
 </head>
-<body class="view-desktop"> <!-- Classe de tema/view pelo JS -->
+
+<body> <!-- SEM classes iniciais -->
+
+    <!-- REMOVIDO: Modal de Seleção Inicial de View -->
+    <!-- <div id="initial-view-modal" class="initial-view-modal hidden"> ... </div> -->
+
+    <!-- Botão Hamburger e Overlay -->
+    <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="icon-open">☰</span>
+        <span class="icon-close">✕</span>
+    </button>
+    <div id="mobile-overlay" class="mobile-overlay"></div>
+    <!-- Fim do Bloco Adicionado -->
 
     <div class="layout-container">
         <%- include('./partials/sidebar') %> <!-- Sidebar Principal -->
@@ -56,17 +68,16 @@
             <%- include('./partials/header') %>
             <%- include('./partials/messages') %>
 
-            <div class="coming-soon-container">
-                <h2><%= typeof sectionTitle !== 'undefined' ? sectionTitle : 'Page' %> Coming Soon...</h2>
+            <div class="coming-soon-content">
+                <h2><%= typeof sectionTitle !== 'undefined' ? sectionTitle : pageTitle %> Coming Soon...</h2>
                 <p>This section is currently under development. Stay tuned!</p>
-                 <a href="/" class="back-link">← Go Home</a>
+                 <a href="/" class="back-button">← Go Home</a>
             </div>
 
-            <!-- Footer incluído no final do main -->
             <%- include('./partials/footer') %>
 
-        </main> <!-- Fim de main.content -->
-    </div> <!-- Fim de layout-container -->
+        </main>
+    </div>
 
     <!-- Scripts Globais -->
     <script src="/js/script.js" defer></script>

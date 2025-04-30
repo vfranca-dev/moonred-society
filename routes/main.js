@@ -1,31 +1,48 @@
 // routes/main.js
 const express = require('express');
 const router = express.Router();
-const { ensureAuthenticated } = require('../config/passport');
+const { ensureAuthenticated } = require('../config/passport'); // Usado para garantir login completo
 const db = require('../config/db');
 
+// Middleware para garantir login COMPLETO (não convidado)
+// Renomeado de ensureAuthenticated para clareza, mas pode manter o nome antigo
+const ensureLoggedIn = (req, res, next) => {
+    // Verifica se está autenticado E se NÃO é um convidado
+    if (req.isAuthenticated() && !req.session.isGuest) {
+        return next();
+    }
+    // Se não for logado completo, redireciona para login
+    req.flash('error_msg', 'Please log in to access this feature.');
+    res.redirect('/auth/login');
+};
+
+// Middleware para permitir acesso a logados ou convidados (para páginas informativas)
+const ensureAuthenticatedOrGuest = (req, res, next) => {
+    if (req.isAuthenticated() || req.session.isGuest) {
+        return next();
+    }
+    // Se nem logado nem convidado, vai para welcome page (ou login)
+    req.flash('error_msg', 'Please log in or continue as guest.');
+    res.redirect('/'); // Redireciona para a welcome page
+};
+
+
 // Rota genérica para renderizar 'coming soon'
+// Permite acesso a logados e convidados
 const comingSoonHandler = (pageTitle, sectionTitle) => {
     return (req, res) => {
         res.render('coming-soon', {
             pageTitle: pageTitle,
-            sectionTitle: sectionTitle,
-            user: req.user
+            sectionTitle: sectionTitle
+            // user e isGuest passados automaticamente via res.locals
         });
     };
 };
 
-// --- ROTA PRINCIPAL (PÁGINA INICIAL COM CARDS) ---
-router.get('/', (req, res) => {
-    // A variável 'user' é passada automaticamente pelo middleware em server.js
-    res.render('index', {
-        pageTitle: 'Home - Moonred Society'
-        // 'user: req.user' não é mais necessário aqui explicitamente
-    });
-});
+// ROTA REMOVIDA: router.get('/') - Agora está em server.js para direcionar para welcome ou index
 
-// --- ROTA DE BUSCA ---
-router.get('/search', ensureAuthenticated, async (req, res, next) => {
+// ROTA DE BUSCA (Requer login completo)
+router.get('/search', ensureLoggedIn, async (req, res, next) => {
     const query = req.query.q;
     const userId = req.user.user_id;
     const minQueryLength = 3;
@@ -46,7 +63,7 @@ router.get('/search', ensureAuthenticated, async (req, res, next) => {
             db.query('SELECT item_id, item_name FROM elden_ring_items WHERE user_id = $1 AND item_name ILIKE $2 ORDER BY item_name', [userId, searchTerm])
         ]);
         const results = { query: query, mapAreas: areasResult.rows, graces: gracesResult.rows, bosses: bossesResult.rows, enemies: enemiesResult.rows, merchants: merchantsResult.rows, items: itemsResult.rows, };
-        res.render('search-results', { pageTitle: `Search Results for "${query}"`, results: results }); // 'user' passado automaticamente
+        res.render('search-results', { pageTitle: `Search Results for "${query}"`, results: results }); // user/isGuest passados automaticamente
     } catch (err) {
         console.error("Search Error:", err);
         req.flash('error_msg', 'Error performing search.');
@@ -54,15 +71,19 @@ router.get('/search', ensureAuthenticated, async (req, res, next) => {
     }
 });
 
-// --- ROTAS "COMING SOON" ---
-router.get('/updates', comingSoonHandler('Update Log', 'Update Log'));
-router.get('/forum', comingSoonHandler('Forum', 'Forum'));
-router.get('/gallery', comingSoonHandler('Gallery', 'Gallery'));
-router.get('/guild', comingSoonHandler('Moonred Society', 'Moonred Society Guild'));
-router.get('/support', comingSoonHandler('Support', 'Support'));
+// ROTAS "COMING SOON" (Acessíveis por convidados ou logados)
+router.get('/updates', ensureAuthenticatedOrGuest, comingSoonHandler('Update Log', 'Update Log'));
+router.get('/forum', ensureAuthenticatedOrGuest, comingSoonHandler('Forum', 'Forum'));
+router.get('/gallery', ensureAuthenticatedOrGuest, comingSoonHandler('Gallery', 'Gallery'));
+router.get('/guild', ensureAuthenticatedOrGuest, comingSoonHandler('Moonred Society', 'Moonred Society Guild'));
+router.get('/support', ensureAuthenticatedOrGuest, comingSoonHandler('Support', 'Support'));
 
-// --- ROTAS QUE REQUEREM LOGIN ---
-router.get('/profile', ensureAuthenticated, comingSoonHandler('Your Profile', 'Profile'));
-router.get('/games', ensureAuthenticated, (req, res) => { res.render('games', { pageTitle: 'Select Game' }); }); // 'user' passado automaticamente
+// ROTA PROFILE (Requer login completo)
+router.get('/profile', ensureLoggedIn, comingSoonHandler('Your Profile', 'Profile'));
+
+// ROTA /games (Redireciona para a home)
+router.get('/games', (req, res) => {
+    res.redirect('/');
+});
 
 module.exports = router;

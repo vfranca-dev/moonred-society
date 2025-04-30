@@ -6,19 +6,27 @@
     <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'Elden Ring Tracker' %></title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="view-desktop">
 
+<body> <!-- SEM classes iniciais -->
+
+    <!-- Botão Hamburger e Overlay -->
     <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-        <span class="icon-open">☰</span> <span class="icon-close">✕</span>
+        <span class="icon-open">☰</span>
+        <span class="icon-close">✕</span>
     </button>
     <div id="mobile-overlay" class="mobile-overlay"></div>
+    <!-- Fim do Bloco Adicionado -->
+
+    <!-- REMOVIDO: Modal de Seleção Inicial de View -->
+    <!-- <div id="initial-view-modal" class="initial-view-modal hidden"> ... </div> -->
+
 
     <div class="layout-container">
         <%- include('../../partials/sidebar-eldenring') %>
 
         <main class="content">
-            <!-- REMOVIDO: Link Back to Games daqui -->
-            <%- include('../../partials/header') %> 
+          
+            <%- include('../../partials/header') %>
             <%- include('../../partials/messages') %>
 
             <div class="page-controls-header">
@@ -61,20 +69,20 @@
             </section>
             <section id="items-section" class="game-section hidden" data-section-title="Items" data-add-form-id="add-item-form" data-edit-form-id="edit-item-form" data-item-selector=".accordion-item" data-url-prefix="/game/elden-ring/items">
                  <div class="section-title-header"><h3>Items</h3><button class="button-add-toggle" data-form-id="add-item-form">Add New</button></div><form id="add-item-form" action="/game/elden-ring/items" method="POST" class="add-item-form hidden"><div class="form-group"><label>Item Name</label><input type="text" name="item_name" required></div><div class="form-group"><label>Type</label><select name="item_type"><option value="">-- Select Type --</option><option value="WEAPON">Weapon</option><option value="ARMOUR">Armour</option><option value="TALISMAN">Talisman</option><option value="ASH_OF_WAR">Ash of War</option><option value="SPIRIT_ASH">Spirit Ash</option><option value="SORCERY">Sorcery</option><option value="INCANTATION">Incantation</option><option value="CRAFTING_MATERIAL">Crafting Material</option><option value="CONSUMABLE">Consumable</option><option value="UPGRADE_MATERIAL">Upgrade Material</option><option value="KEY_ITEM">Key Item</option><option value="OTHER">Other</option></select></div><div class="form-group"><label>Found In Areas</label><select name="location_area_ids" multiple><% if(typeof mapAreas !== 'undefined' && mapAreas && mapAreas.length > 0) { mapAreas.forEach(area => { %><option value="<%= area.area_id %>"><%= area.area_name %></option><% }); } %></select></div><div class="form-group full-width"><label>Notes</label><textarea name="notes" rows="2"></textarea></div><div class="form-group-checkbox"><input type="checkbox" name="is_obtained" value="true" id="add_item_obtained"><label for="add_item_obtained"> Obtained</label></div><div class="form-actions"><button type="submit">Add Item</button><button type="button" class="button-cancel-add">Cancel</button></div></form><form id="edit-item-form" action="" method="POST" class="add-item-form hidden" data-base-action="/game/elden-ring/items/"><input type="hidden" name="_method" value="PUT"><h4 class="form-title">Edit Item</h4><div class="form-group"><label for="edit_item_name">Item Name</label><input type="text" id="edit_item_name" name="item_name" required></div><div class="form-group"><label for="edit_item_type">Type</label><select id="edit_item_type" name="item_type"><option value="">-- Select Type --</option><option value="WEAPON">Weapon</option><option value="ARMOUR">Armour</option><option value="TALISMAN">Talisman</option><option value="ASH_OF_WAR">Ash of War</option><option value="SPIRIT_ASH">Spirit Ash</option><option value="SORCERY">Sorcery</option><option value="INCANTATION">Incantation</option><option value="CRAFTING_MATERIAL">Crafting Material</option><option value="CONSUMABLE">Consumable</option><option value="UPGRADE_MATERIAL">Upgrade Material</option><option value="KEY_ITEM">Key Item</option><option value="OTHER">Other</option></select></div><div class="form-group"><label for="edit_item_location_area_ids">Found In Areas</label><select id="edit_item_location_area_ids" name="location_area_ids" multiple><% if(typeof mapAreas !== 'undefined' && mapAreas && mapAreas.length > 0) { mapAreas.forEach(area => { %><option value="<%= area.area_id %>"><%= area.area_name %></option><% }); } %></select></div><div class="form-group full-width"><label for="edit_item_notes">Notes</label><textarea id="edit_item_notes" name="notes" rows="2"></textarea></div><div class="form-group-checkbox"><input type="checkbox" name="is_obtained" value="true" id="edit_item_obtained"><label for="edit_item_obtained"> Obtained</label></div><div class="form-actions"><button type="submit">Save Changes</button><button type="button" class="button-cancel-edit">Cancel</button></div></form><% if (typeof items !== 'undefined' && items && items.length > 0) { %><ul class="accordion-list"><% items.forEach(item => { %><li class="accordion-item" data-id="<%= item.item_id %>" data-name="<%= item.item_name %>" data-item_type="<%= item.item_type || '' %>" data-notes="<%= item.notes || '' %>" data-is_obtained="<%= item.is_obtained %>" data-location_details="<%= item.location_details || '' %>" data-location_area_ids="<%= JSON.stringify(item.locations ? item.locations.map(l=>l.area_id) : []) %>"><div class="item-header <%= item.is_obtained ? 'defeated' : '' %>"><strong><%= item.item_name %></strong><span class="accordion-indicator">▼</span></div><div class="item-details-content"><p><strong>Status:</strong> <span class="status-indicator <%= item.is_obtained ? 'status-defeated' : 'status-not-defeated' %>"><%= item.is_obtained ? 'Obtained' : 'Not Obtained' %></span></p><p><strong>Type:</strong> <%= item.item_type ? item.item_type.replace(/_/g, ' ') : 'N/A' %></p><p><strong>Found In:</strong> <% if(item.locations && item.locations.length > 0){ item.locations.forEach((loc, index) => { %><%= loc.area_name %><%=(index < item.locations.length - 1) ? ', ' : '' %><% }); } else { %>N/A<% } %></p><% if (item.location_details) { %><p><strong>Location Details:</strong> <%= item.location_details %></p><% } %><p><strong>Dropped By (Boss):</strong> <% if(item.dropped_by_bosses && item.dropped_by_bosses.length > 0){ item.dropped_by_bosses.forEach((b, index) => { %><%= b.boss_name %><%=(index < item.dropped_by_bosses.length - 1) ? ', ' : '' %><% }); } else { %>N/A<% } %></p><p><strong>Dropped By (Enemy):</strong> <% if(item.dropped_by_enemies && item.dropped_by_enemies.length > 0){ item.dropped_by_enemies.forEach((e, index) => { %><%= e.enemy_name %><%=(index < item.dropped_by_enemies.length - 1) ? ', ' : '' %><% }); } else { %>N/A<% } %></p><p><strong>Sold By:</strong> <% if(item.sold_by_merchants && item.sold_by_merchants.length > 0){ item.sold_by_merchants.forEach((m, index) => { %><%= m.merchant_name %><%=(index < item.sold_by_merchants.length - 1) ? ', ' : '' %><% }); } else { %>N/A<% } %></p><p><strong>Notes:</strong></p> <% if (item.notes && item.notes.trim() !== '') { %><p><%= item.notes %></p><% } else { %><p class="no-notes">No notes added.</p><% } %><div class="item-actions"><button class="button-edit">Edit</button><button class="button-delete">Delete</button></div></div></li><% }); %></ul><% } %><p class="no-data-message <%= (typeof items !== 'undefined' && items && items.length > 0) ? 'hidden' : '' %>">No items added yet.</p>
-            </section>
+        </section>
 
-            <!-- Footer -->
-            <%- include('../../partials/footer') %>
+        <!-- Footer -->
+        <%- include('../../partials/footer') %>
 
-        </main>
-    </div>
+    </main>
+</div>
 
-    <!-- Scripts -->
-     <script src="/js/script.js" defer></script>
-     <script src="/js/dropdown.js" defer></script>
-     <script src="/js/theme-switcher.js" defer></script>
-     <script src="/js/view-switcher.js" defer></script>
-     <script src="/js/eldenring-tracker.js" defer></script>
+<!-- Scripts -->
+ <script src="/js/script.js" defer></script>
+ <script src="/js/dropdown.js" defer></script>
+ <script src="/js/theme-switcher.js" defer></script>
+ <script src="/js/view-switcher.js" defer></script>
+ <script src="/js/eldenring-tracker.js" defer></script>
 
 </body>
-</html>
+</html> 

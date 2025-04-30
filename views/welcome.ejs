@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'Welcome' %> - Moonred Society</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* Estilos para a página de boas-vindas */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-color-sidebar); /* Fundo escuro */
+        }
+        .welcome-container {
+            background-color: var(--bg-color-content-box);
+            padding: 3rem 4rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color-main);
+            text-align: center;
+            max-width: 550px;
+            width: 90%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+        .welcome-title {
+            font-family: var(--font-display);
+            font-size: var(--font-size-xxl);
+            color: var(--text-color-headings);
+            margin-bottom: 1.5rem;
+        }
+        .welcome-text {
+            font-size: var(--font-size-normal);
+            color: var(--text-color-main);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+        .welcome-actions {
+            display: flex;
+            flex-direction: column; /* Empilha os botões */
+            gap: 1rem; /* Espaço entre botões */
+            align-items: stretch; /* Faz botões ocuparem largura */
+        }
+        .welcome-actions .btn {
+            display: block;
+            padding: 1rem 1.5rem;
+            font-size: var(--font-size-large);
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            font-family: var(--font-primary);
+            border: 1px solid transparent;
+        }
+        .btn-primary {
+            background-color: var(--bg-color-button-primary);
+            color: var(--text-color-button-primary);
+            border-color: var(--border-color-highlight);
+        }
+        .btn-primary:hover {
+            background-color: var(--bg-color-button-primary-hover);
+        }
+        .btn-secondary {
+            background-color: var(--bg-color-button-secondary);
+            color: var(--text-color-button-secondary);
+            border-color: var(--border-color-input);
+        }
+        .btn-secondary:hover {
+            background-color: var(--bg-color-button-secondary-hover);
+        }
+        /* Estilo específico para botão form */
+        .guest-form button {
+             width: 100%; /* Garante largura total */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <h1 class="welcome-title">Welcome to Moonred Society</h1>
+        <p class="welcome-text">
+            Please log in to access all features or continue as a guest with limited functionality.
+        </p>
+        <div class="welcome-actions">
+            <a href="/auth/login" class="btn btn-primary">Login / Register</a>
+            <form action="/guest-login" method="POST" class="guest-form">
+                 <button type="submit" class="btn btn-secondary">Continue as Guest</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

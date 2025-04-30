@@ -6,14 +6,13 @@
     <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'Home - Moonred Society' %></title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="view-desktop"> <!-- Classe de view e tema inicial -->
+<body> <!-- SEM classes iniciais -->
 
-    <!-- Botão Hamburger para Mobile (ADICIONADO AQUI) -->
+    <!-- Botão Hamburger e Overlay -->
     <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-        <span class="icon-open">☰</span> <!-- Ícone de abrir -->
-        <span class="icon-close">✕</span> <!-- Ícone de fechar -->
+        <span class="icon-open">☰</span>
+        <span class="icon-close">✕</span>
     </button>
-    <!-- Overlay Mobile (ADICIONADO AQUI) -->
     <div id="mobile-overlay" class="mobile-overlay"></div>
 
     <div class="layout-container">
@@ -44,7 +43,6 @@
             </div>
 
             <%- include('partials/footer') %>
-
         </main>
     </div>
 
@@ -53,7 +51,5 @@
      <script src="/js/dropdown.js" defer></script>
      <script src="/js/theme-switcher.js" defer></script>
      <script src="/js/view-switcher.js" defer></script>
-     <!-- Elden Ring Tracker script NÃO é necessário aqui -->
-
 </body>
 </html>
